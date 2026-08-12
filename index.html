@@ -522,9 +522,8 @@ function endGame(won){
   over = true;
   renderNav();
   resultEl.classList.add('show', won ? 'win' : 'lose');
-  resultTitle.textContent = won ? 'Cleared it!' : 'Out of guesses';
+  resultTitle.textContent = won ? 'You guessed the Tower!' : 'You failed...';
   resultBody.textContent = won
-    ? `It was ${target.name} (${target.abbr}) — a ${diffLabel(target)} ${target.type.toLowerCase()} in ${target.area}, ${target.realm}.`
     : `The tower was ${target.name} (${target.abbr}) — a ${diffLabel(target)} ${target.type.toLowerCase()} in ${target.area}, ${target.realm}, made by ${target.creators.join(' and ')}.`;
   resultFact.textContent = target.fact;
 }
