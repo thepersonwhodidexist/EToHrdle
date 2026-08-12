@@ -200,6 +200,12 @@
   .result.show{display:block;}
   .result h2{margin:0 0 6px;font-size:16px;}
   .result p{margin:4px 0;color:var(--gray);font-size:12px;line-height:1.5;}
+  .result .fact{
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px solid var(--mid);
+    color:var(--fg);
+  }
 
   .legend{
     display:flex;
@@ -271,6 +277,7 @@
     <div class="result" id="result">
       <h2 id="result-title"></h2>
       <p id="result-body"></p>
+      <p class="fact" id="result-fact"></p>
     </div>
 
     <div class="legend">
@@ -322,6 +329,7 @@ const pipsEl = document.getElementById('pips');
 const resultEl = document.getElementById('result');
 const resultTitle = document.getElementById('result-title');
 const resultBody = document.getElementById('result-body');
+const resultFact = document.getElementById('result-fact');
 const newGameBtn = document.getElementById('new-game-btn');
 
 function areaKey(fullLabel){
@@ -534,6 +542,7 @@ function endGame(won){
   resultBody.textContent = won
     ? `It was ${target.name} (${target.abbr}) — ${diffLabel(target)} ${target.type.toLowerCase()} in ${target.area}, ${target.realm}.`
     : `The tower was ${target.name} (${target.abbr}) — ${diffLabel(target)} ${target.type.toLowerCase()} in ${target.area}, ${target.realm}, made by ${target.creators.join(' and ')}.`;
+  resultFact.textContent = target.fact || '';
 }
 
 function handleGuess(guess){
@@ -564,6 +573,7 @@ function newGame(){
   navArea = null;
   boardBody.innerHTML = '';
   resultEl.classList.remove('show','win','lose');
+  resultFact.textContent = '';
   guessesLeftEl.textContent = `${MAX_GUESSES} guesses remaining`;
   renderPips();
   renderNav();
