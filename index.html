@@ -19,6 +19,19 @@
     --red-bg:#fbe4e2;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
   }
+  html[data-theme="dark"]{
+    --bg:#121212;
+    --fg:#f2f2f2;
+    --gray:#a0a0a0;
+    --mid:#3a3a3a;
+    --border:#f2f2f2;
+    --green:#7fd88f;
+    --green-bg:#1c3320;
+    --yellow:#f0cf5c;
+    --yellow-bg:#3a3010;
+    --red:#f28b82;
+    --red-bg:#3a1a17;
+  }
   *{box-sizing:border-box;}
   body{
     margin:0;
@@ -28,7 +41,22 @@
     padding:26px 14px 50px;
   }
   .wrap{max-width:720px;margin:0 auto;}
-  header{text-align:center;margin-bottom:18px;}
+  header{text-align:center;margin-bottom:18px;position:relative;}
+  .theme-toggle{
+    position:absolute;
+    top:0;
+    right:0;
+    background:var(--bg);
+    border:1px solid var(--border);
+    color:var(--fg);
+    width:34px;
+    height:34px;
+    padding:0;
+    font-size:16px;
+    line-height:1;
+    cursor:pointer;
+  }
+  .theme-toggle:hover{background:var(--fg);color:var(--bg);}
   h1{margin:0 0 4px;font-size:26px;font-weight:700;letter-spacing:0;}
   .sub{color:var(--gray);font-size:13px;margin:0;}
 
@@ -61,8 +89,8 @@
   .guess-count-row{display:flex;align-items:center;gap:10px;}
   input[type=number]{
     border:1px solid var(--border);
-    background:#fff;
-    color:#000;
+    background:var(--bg);
+    color:var(--fg);
     padding:6px 8px;
     width:70px;
     font-size:14px;
@@ -75,19 +103,19 @@
     font-size:13px;
     cursor:pointer;
   }
-  .hint-toggles input{accent-color:#000;}
+  .hint-toggles input{accent-color:var(--fg);}
 
   button{
-    background:#fff;
-    border:1px solid #000;
-    color:#000;
+    background:var(--bg);
+    border:1px solid var(--border);
+    color:var(--fg);
     padding:9px 18px;
     font-size:13px;
     cursor:pointer;
   }
-  button:hover{background:#000;color:#fff;}
+  button:hover{background:var(--fg);color:var(--bg);}
   button:disabled{opacity:.35;cursor:default;}
-  button:disabled:hover{background:#fff;color:#000;}
+  button:disabled:hover{background:var(--bg);color:var(--fg);}
   .btn-row{display:flex;justify-content:center;gap:8px;margin-top:16px;}
 
   /* ---- navigation drill-down ---- */
@@ -103,13 +131,13 @@
   .crumb-btn{
     background:none;
     border:none;
-    color:#000;
+    color:var(--fg);
     padding:0;
     font-size:12px;
     text-decoration:underline;
     cursor:pointer;
   }
-  .crumb-btn:hover{background:none;color:#000;}
+  .crumb-btn:hover{background:none;color:var(--fg);}
   .crumb-sep{opacity:.5;}
 
   .nav-grid{
@@ -129,23 +157,23 @@
     gap:6px;
   }
   .nav-btn{
-    background:#fff;
-    border:1px solid #000;
-    color:#000;
+    background:var(--bg);
+    border:1px solid var(--border);
+    color:var(--fg);
     padding:8px 10px;
     font-size:12px;
     cursor:pointer;
     text-align:left;
     width:100%;
   }
-  .nav-btn:hover{background:#000;color:#fff;}
+  .nav-btn:hover{background:var(--fg);color:var(--bg);}
   .nav-btn.sub{
     border-style:dashed;
     font-size:11px;
     padding:6px 8px 6px 16px;
   }
   .nav-btn.empty{opacity:.3;cursor:default;}
-  .nav-btn.empty:hover{background:#fff;color:#000;}
+  .nav-btn.empty:hover{background:var(--bg);color:var(--fg);}
   .nav-btn.tower{
     display:flex;
     flex-direction:column;
@@ -161,8 +189,8 @@
     color:var(--gray);
   }
   .pips{display:flex;justify-content:center;gap:6px;margin:0 0 14px;}
-  .pip{width:9px;height:9px;border:1px solid #000;background:#fff;}
-  .pip.used{background:#000;}
+  .pip{width:9px;height:9px;border:1px solid var(--border);background:var(--bg);}
+  .pip.used{background:var(--fg);}
 
   /* ---- board ---- */
   table.board{width:100%;border-collapse:collapse;margin-top:10px;}
@@ -174,7 +202,7 @@
     text-align:left;
     padding:0 6px 6px;
     font-weight:normal;
-    border-bottom:1px solid #000;
+    border-bottom:1px solid var(--border);
   }
   table.board td{
     padding:8px 6px;
@@ -187,13 +215,13 @@
     align-items:center;
     gap:5px;
     padding:5px 9px;
-    border:1px solid #000;
+    border:1px solid var(--border);
     width:100%;
   }
   .cell.hit{background:var(--green-bg);color:var(--green);border-color:var(--green);}
   .cell.part{background:var(--yellow-bg);color:var(--yellow);border-color:var(--yellow);}
   .cell.miss{background:var(--red-bg);color:var(--red);border-color:var(--red);}
-  .cell.mixed{background:#fff;color:#000;border-color:#000;}
+  .cell.mixed{background:var(--bg);color:var(--fg);border-color:var(--fg);}
   .name-match{
     background:var(--yellow-bg);
     color:var(--yellow);
@@ -213,7 +241,7 @@
   .result{
     margin-top:16px;
     padding:14px;
-    border:1px solid #000;
+    border:1px solid var(--border);
     text-align:center;
     display:none;
   }
@@ -239,7 +267,7 @@
 
   @media (max-width:560px){
     table.board thead{display:none;}
-    table.board tr{display:block;margin-bottom:10px;border:1px solid #000;padding:6px;}
+    table.board tr{display:block;margin-bottom:10px;border:1px solid var(--border);padding:6px;}
     table.board td{display:flex;justify-content:space-between;align-items:center;border:none;padding:5px 3px;}
     table.board td::before{content:attr(data-label);font-size:9px;text-transform:uppercase;color:var(--gray);}
     .cell{justify-content:flex-end;width:auto;}
@@ -249,6 +277,7 @@
 <body>
 <div class="wrap">
   <header>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">◐</button>
     <h1>ETordle</h1>
     <p class="sub">Guess the Eternal Towers of Hell tower.</p>
   </header>
@@ -331,6 +360,30 @@ let guessesUsed = 0;
 let over = false;
 let navRealm = null;
 let navArea = null;
+
+/* ---------- theme ---------- */
+
+const themeToggle = document.getElementById('theme-toggle');
+
+function applyTheme(theme){
+  document.documentElement.setAttribute('data-theme', theme);
+  themeToggle.textContent = theme === 'dark' ? '☀' : '◐';
+  try{ localStorage.setItem('etordle-theme', theme); }catch(e){}
+}
+
+(function initTheme(){
+  let saved = null;
+  try{ saved = localStorage.getItem('etordle-theme'); }catch(e){}
+  if(!saved){
+    saved = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  applyTheme(saved);
+})();
+
+themeToggle.addEventListener('click', ()=>{
+  const current = document.documentElement.getAttribute('data-theme');
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+});
 
 const menuScreen = document.getElementById('menu-screen');
 const gameScreen = document.getElementById('game-screen');
