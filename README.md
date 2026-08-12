@@ -1,2 +1,2 @@
-# EToHrdle
+# ETordle
 pls no
