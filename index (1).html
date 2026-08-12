@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ETordle</title>
+<style>
+  :root{
+    --bg:#161114;
+    --panel:#1f181c;
+    --panel2:#2a2024;
+    --ember:#ff6b35;
+    --ember-dim:#c9502a;
+    --gold:#f4b942;
+    --text:#f1e6de;
+    --text-dim:#b8a99f;
+    --green:#3f9142;
+    --yellow:#c9a227;
+    --red:#8a2f2f;
+    --border:#3a2c2f;
+    font-family: 'Trebuchet MS', 'Segoe UI', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 50% -10%, #3a1a12 0%, var(--bg) 55%),
+      var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    padding:28px 14px 60px;
+  }
+  .wrap{max-width:760px;margin:0 auto;}
+  header{text-align:center;margin-bottom:22px;}
+  .brand-eyebrow{
+    letter-spacing:.22em;
+    text-transform:uppercase;
+    font-size:11px;
+    color:var(--ember);
+    font-weight:bold;
+  }
+  h1{
+    margin:6px 0 4px;
+    font-size:clamp(30px,6vw,44px);
+    letter-spacing:.01em;
+    color:var(--gold);
+    text-shadow: 0 0 18px rgba(255,107,53,0.35);
+  }
+  .sub{color:var(--text-dim);font-size:14px;max-width:520px;margin:0 auto;line-height:1.5;}
+  .badge-row{display:flex;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap;}
+  .badge{
+    border:1px solid var(--border);
+    background:var(--panel);
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:11px;
+    color:var(--text-dim);
+  }
+
+  .panel{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px;
+    margin-top:20px;
+  }
+
+  .breadcrumb{
+    display:flex;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-bottom:14px;
+    font-size:12px;
+    color:var(--text-dim);
+  }
+  .crumb-btn{
+    background:transparent;
+    border:none;
+    color:var(--ember);
+    padding:2px 4px;
+    font-size:12px;
+    font-weight:bold;
+    text-decoration:underline;
+    cursor:pointer;
+  }
+  .crumb-sep{opacity:.6;}
+  .nav-title{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+    color:var(--text-dim);
+    margin:0 0 10px;
+  }
+  .nav-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(150px,1fr));
+    gap:10px;
+    align-items:start;
+  }
+  .nav-grid.towers{
+    grid-template-columns:repeat(auto-fill, minmax(190px,1fr));
+  }
+  .ring-card{
+    background:var(--panel2);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:8px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .nav-btn{
+    background:transparent;
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:9px 10px;
+    border-radius:7px;
+    font-size:13px;
+    cursor:pointer;
+    text-align:left;
+    width:100%;
+    transition:transform .08s ease, border-color .12s ease;
+  }
+  .nav-btn:hover{border-color:var(--ember-dim);transform:translateY(-1px);}
+  .nav-btn.sub{
+    border-style:dashed;
+    color:var(--text-dim);
+    font-size:11.5px;
+    padding:7px 10px 7px 18px;
+  }
+  .nav-btn.empty{opacity:.35;cursor:default;}
+  .nav-btn.empty:hover{transform:none;border-color:var(--border);}
+  .nav-btn.tower{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:2px;
+    padding:10px 14px;
+  }
+  .nav-btn.tower .t-name{font-weight:bold;color:var(--gold);}
+  .nav-btn.tower .t-meta{font-size:11px;color:var(--text-dim);}
+  .guess-row{display:none;}
+  select{
+    flex:1;
+    background:var(--panel2);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:10px 12px;
+    border-radius:8px;
+    font-size:15px;
+  }
+  select:disabled{opacity:.5;}
+  button{
+    background:linear-gradient(180deg,var(--ember),var(--ember-dim));
+    border:none;
+    color:#1a0f08;
+    font-weight:bold;
+    padding:10px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:14px;
+    letter-spacing:.02em;
+    transition:transform .08s ease;
+  }
+  button:hover{transform:translateY(-1px);}
+  button:disabled{opacity:.4;cursor:default;transform:none;}
+  button.secondary{
+    background:transparent;
+    border:1px solid var(--ember-dim);
+    color:var(--ember);
+  }
+
+  .guesses-left{
+    text-align:center;
+    margin:6px 0 10px;
+    font-size:13px;
+    color:var(--text-dim);
+    letter-spacing:.05em;
+  }
+  .pips{display:flex;justify-content:center;gap:6px;margin:0 0 16px;}
+  .pip{width:10px;height:10px;border-radius:50%;background:var(--border);}
+  .pip.used{background:var(--ember);}
+
+  table.board{width:100%;border-collapse:collapse;margin-top:12px;}
+  table.board th{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:var(--text-dim);
+    text-align:left;
+    padding:0 8px 8px;
+    font-weight:normal;
+    border-bottom:1px solid var(--border);
+  }
+  table.board td{
+    padding:10px 8px;
+    font-size:13px;
+    vertical-align:middle;
+    border-bottom:1px solid var(--border);
+  }
+  .cell{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:6px 9px;
+    border-radius:7px;
+    width:100%;
+  }
+  .cell.hit{background:rgba(63,145,66,0.28);color:#a9e0ab;border:1px solid var(--green);}
+  .cell.part{background:rgba(201,162,39,0.22);color:#f0d693;border:1px solid var(--yellow);}
+  .cell.miss{background:rgba(138,47,47,0.22);color:#e4a3a3;border:1px solid var(--red);}
+  .tower-name-cell{font-weight:bold;color:var(--gold);}
+  .arrow{font-size:12px;opacity:.85;}
+
+  .result{
+    margin-top:18px;
+    padding:16px;
+    border-radius:10px;
+    text-align:center;
+    display:none;
+  }
+  .result.show{display:block;}
+  .result.win{background:rgba(63,145,66,0.18);border:1px solid var(--green);}
+  .result.lose{background:rgba(138,47,47,0.18);border:1px solid var(--red);}
+  .result h2{margin:0 0 6px;font-size:20px;color:var(--gold);}
+  .result p{margin:4px 0;color:var(--text-dim);font-size:13px;line-height:1.5;}
+  .result .fact{
+    margin-top:10px;
+    font-style:italic;
+    color:var(--text);
+    font-size:13px;
+    border-top:1px solid var(--border);
+    padding-top:10px;
+  }
+
+  .legend{
+    display:flex;
+    justify-content:center;
+    gap:16px;
+    flex-wrap:wrap;
+    margin-top:16px;
+    font-size:11px;
+    color:var(--text-dim);
+  }
+  .legend span{display:inline-flex;align-items:center;gap:5px;}
+  .dot{width:9px;height:9px;border-radius:50%;}
+  .dot.hit{background:var(--green);}
+  .dot.part{background:var(--yellow);}
+  .dot.miss{background:var(--red);}
+
+  footer{
+    text-align:center;
+    margin-top:22px;
+    font-size:11px;
+    color:var(--text-dim);
+    line-height:1.6;
+  }
+  footer a{color:var(--ember);}
+
+  @media (max-width:560px){
+    table.board thead{display:none;}
+    table.board tr{display:block;margin-bottom:12px;border:1px solid var(--border);border-radius:10px;padding:8px;}
+    table.board td{display:flex;justify-content:space-between;align-items:center;border:none;padding:6px 4px;}
+    table.board td::before{content:attr(data-label);font-size:10px;text-transform:uppercase;color:var(--text-dim);letter-spacing:.05em;}
+    .cell{justify-content:flex-end;width:auto;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand-eyebrow">EToH</div>
+    <h1>EToHrdle</h1>
+    <p class="sub">A random CANON tower is chosen. You have 3 guesses. Every guess reveals how close you are on the type, realm, area, difficulty, and creator of the tower.</p>
+    <div class="badge-row">
+      <span class="badge" id="pool-count">14 towers</span>
+      <span class="badge">3 guesses</span>
+      <span class="badge">data from JToH/EToH Wiki + SirSamiboi's tower_info.txt in github</span>
+    </div>
+  </header>
+
+  <div class="panel">
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <p class="nav-title" id="nav-title">Choose a realm</p>
+    <div class="nav-grid" id="nav-grid"></div>
+
+    <div class="guess-row">
+      <select id="guess-select"></select>
+      <button id="guess-btn">Guess</button>
+    </div>
+    <div class="guesses-left" id="guesses-left"></div>
+    <div class="pips" id="pips"></div>
+
+    <table class="board" id="board">
+      <thead>
+        <tr>
+          <th>Tower</th>
+          <th>Type</th>
+          <th>Realm</th>
+          <th>Area</th>
+          <th>Difficulty</th>
+          <th>Creator</th>
+        </tr>
+      </thead>
+      <tbody id="board-body"></tbody>
+    </table>
+
+    <div class="result" id="result">
+      <h2 id="result-title"></h2>
+      <p id="result-body"></p>
+      <p class="fact" id="result-fact"></p>
+    </div>
+
+    <div class="legend">
+      <span><span class="dot hit"></span> exact match</span>
+      <span><span class="dot part"></span> same tier / creator overlap</span>
+      <span><span class="dot miss"></span> no match</span>
+    </div>
+
+    <div style="text-align:center;margin-top:16px;">
+      <button class="secondary" id="new-game-btn">New tower ↻</button>
+    </div>
+  </div>
+
+  <footer>
+    Curated 14-tower dataset (Great Inferno rings + Spatial System zones), verified against
+    <a href="https://jtoh.fandom.com/wiki/Tower" target="_blank" rel="noopener">jtoh.fandom.com/wiki/Tower</a>
+    and the
+    <a href="https://gist.github.com/SirSamiboi/cc1e1dee46b92fa6c53bdb328ecdeff9" target="_blank" rel="noopener">tower_info gist</a>.
+    Not affiliated with Anthropic or JToH.
+  </footer>
+</div>
+
+<script src="data.js"></script>
+<script>
+function areaKey(fullLabel){
+  return fullLabel.split(' - ')[0];
+}
+
+function towersInArea(fullLabel){
+  const key = areaKey(fullLabel);
+  return TOWERS.filter(t=>t.area === key);
+}
+
+const MAX_GUESSES = 3;
+let target = null;
+let guessesUsed = 0;
+let over = false;
+let navRealm = null;
+let navArea = null;
+
+const navGrid = document.getElementById('nav-grid');
+const navTitle = document.getElementById('nav-title');
+const breadcrumbEl = document.getElementById('breadcrumb');
+const selectEl = document.getElementById('guess-select');
+const guessBtn = document.getElementById('guess-btn');
+const boardBody = document.getElementById('board-body');
+const guessesLeftEl = document.getElementById('guesses-left');
+const pipsEl = document.getElementById('pips');
+const resultEl = document.getElementById('result');
+const resultTitle = document.getElementById('result-title');
+const resultBody = document.getElementById('result-body');
+const resultFact = document.getElementById('result-fact');
+const newGameBtn = document.getElementById('new-game-btn');
+const poolCount = document.getElementById('pool-count');
+
+poolCount.textContent = TOWERS.length + " towers";
+
+function renderBreadcrumb(){
+  const parts = [];
+  parts.push(`<button class="crumb-btn" data-nav="realm">Start</button>`);
+  if(navRealm){
+    parts.push(`<span class="crumb-sep">›</span>`);
+    parts.push(`<button class="crumb-btn" data-nav="area">${navRealm.split(' (')[0]}</button>`);
+  }
+  if(navArea){
+    parts.push(`<span class="crumb-sep">›</span>`);
+    parts.push(`<span>${navArea}</span>`);
+  }
+  breadcrumbEl.innerHTML = parts.join('');
+  breadcrumbEl.querySelectorAll('.crumb-btn').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      if(b.dataset.nav === 'realm'){ navRealm=null; navArea=null; }
+      if(b.dataset.nav === 'area'){ navArea=null; }
+      renderNav();
+    });
+  });
+}
+
+function renderNav(){
+  if(over){
+    navGrid.innerHTML = '';
+    navTitle.textContent = '';
+    breadcrumbEl.innerHTML = '';
+    return;
+  }
+  renderBreadcrumb();
+  navGrid.innerHTML = '';
+  navGrid.classList.remove('towers');
+
+  if(!navRealm){
+    navTitle.textContent = 'Choose a realm';
+    [REALM_INFERNO, REALM_SPATIAL].forEach(r=>{
+      const b = document.createElement('button');
+      b.className = 'nav-btn';
+      b.textContent = r;
+      b.addEventListener('click', ()=>{ navRealm = r; navArea = null; renderNav(); });
+      navGrid.appendChild(b);
+    });
+    return;
+  }
+
+  if(!navArea){
+    navTitle.textContent = 'Choose a ring / zone';
+    AREA_GROUPS.filter(g=>g.realm === navRealm).forEach(g=>{
+      const card = document.createElement('div');
+      card.className = 'ring-card';
+
+      const mainCount = towersInArea(g.main).length;
+      const mainBtn = document.createElement('button');
+      mainBtn.className = 'nav-btn' + (mainCount===0 ? ' empty' : '');
+      mainBtn.textContent = g.main;
+      if(mainCount===0){
+        mainBtn.disabled = true;
+      } else {
+        mainBtn.addEventListener('click', ()=>{ navArea = g.main; renderNav(); });
+      }
+      card.appendChild(mainBtn);
+
+      if(g.sub){
+        const subCount = towersInArea(g.sub).length;
+        const subBtn = document.createElement('button');
+        subBtn.className = 'nav-btn sub' + (subCount===0 ? ' empty' : '');
+        subBtn.textContent = `↳ ${g.sub}`;
+        if(subCount===0){
+          subBtn.disabled = true;
+        } else {
+          subBtn.addEventListener('click', ()=>{ navArea = g.sub; renderNav(); });
+        }
+        card.appendChild(subBtn);
+      }
+
+      navGrid.appendChild(card);
+    });
+    return;
+  }
+
+  navTitle.textContent = 'Choose your guess';
+  navGrid.classList.add('towers');
+  towersInArea(navArea).forEach(t=>{
+    const b = document.createElement('button');
+    b.className = 'nav-btn tower';
+    b.innerHTML = `<span class="t-name">${t.name}</span><span class="t-meta">${t.abbr} - ${t.type}</span>`;
+    b.addEventListener('click', ()=>handleGuess(t));
+    navGrid.appendChild(b);
+  });
+}
+
+function renderPips(){
+  pipsEl.innerHTML = '';
+  for(let i=0;i<MAX_GUESSES;i++){
+    const d = document.createElement('div');
+    d.className = 'pip' + (i < guessesUsed ? ' used' : '');
+    pipsEl.appendChild(d);
+  }
+}
+
+function diffArrow(guess, target){
+  if(guess.rating != null && target.rating != null){
+    if(guess.rating === target.rating) return '';
+    return guess.rating < target.rating ? '<span class="arrow">▲ harder</span>' : '<span class="arrow">▼ easier</span>';
+  }
+  const gi = DIFF_ORDER.indexOf(guess.difficulty);
+  const ti = DIFF_ORDER.indexOf(target.difficulty);
+  if(gi === ti) return '';
+  return gi < ti ? '<span class="arrow">▲ harder</span>' : '<span class="arrow">▼ easier</span>';
+}
+
+function diffLabel(t){
+  return t.rating != null ? `${t.rating.toFixed(2)} (${t.difficulty})` : `${t.difficulty} (unrated)`;
+}
+
+function cellClass(status){
+  return status === 'hit' ? 'hit' : status === 'part' ? 'part' : 'miss';
+}
+
+function makeRow(guess){
+  const tr = document.createElement('tr');
+
+  const typeStatus = guess.type === target.type ? 'hit' : 'miss';
+  const realmStatus = guess.realm === target.realm ? 'hit' : 'miss';
+  const areaStatus = guess.area === target.area ? 'hit' : 'miss';
+
+  let diffStatus;
+  if(guess.difficulty === target.difficulty){
+    diffStatus = (guess.rating === target.rating) ? 'hit' : 'part';
+  } else {
+    diffStatus = 'miss';
+  }
+
+  const guessCreators = new Set(guess.creators);
+  const targetCreators = new Set(target.creators);
+  const sameSet = guess.creators.length === target.creators.length &&
+    guess.creators.every(c=>targetCreators.has(c));
+  const overlap = guess.creators.some(c=>targetCreators.has(c));
+  const creatorStatus = sameSet ? 'hit' : overlap ? 'part' : 'miss';
+
+  tr.innerHTML = `
+    <td data-label="Tower"><span class="tower-name-cell">${guess.name}</span></td>
+    <td data-label="Type"><span class="cell ${cellClass(typeStatus)}">${guess.type}</span></td>
+    <td data-label="Realm"><span class="cell ${cellClass(realmStatus)}">${guess.realm.split(' (')[0]}</span></td>
+    <td data-label="Area"><span class="cell ${cellClass(areaStatus)}">${guess.area}</span></td>
+    <td data-label="Difficulty"><span class="cell ${cellClass(diffStatus)}">${diffLabel(guess)} ${diffStatus!=='hit'?diffArrow(guess,target):''}</span></td>
+    <td data-label="Creator"><span class="cell ${cellClass(creatorStatus)}">${guess.creators.join(', ')}</span></td>
+  `;
+  boardBody.appendChild(tr);
+  return guess.abbr === target.abbr;
+}
+
+function endGame(won){
+  over = true;
+  renderNav();
+  resultEl.classList.add('show', won ? 'win' : 'lose');
+  resultTitle.textContent = won ? 'Cleared it!' : 'Out of guesses';
+  resultBody.textContent = won
+    ? `It was ${target.name} (${target.abbr}) — a ${diffLabel(target)} ${target.type.toLowerCase()} in ${target.area}, ${target.realm}.`
+    : `The tower was ${target.name} (${target.abbr}) — a ${diffLabel(target)} ${target.type.toLowerCase()} in ${target.area}, ${target.realm}, made by ${target.creators.join(' and ')}.`;
+  resultFact.textContent = target.fact;
+}
+
+function handleGuess(guess){
+  if(over || !guess) return;
+
+  guessesUsed++;
+  const correct = makeRow(guess);
+  renderPips();
+  guessesLeftEl.textContent = `${MAX_GUESSES - guessesUsed} guess${MAX_GUESSES - guessesUsed === 1 ? '' : 'es'} remaining`;
+
+  navRealm = null;
+  navArea = null;
+
+  if(correct){
+    endGame(true);
+  } else if(guessesUsed >= MAX_GUESSES){
+    endGame(false);
+  } else {
+    renderNav();
+  }
+}
+
+function newGame(){
+  target = TOWERS[Math.floor(Math.random() * TOWERS.length)];
+  guessesUsed = 0;
+  over = false;
+  navRealm = null;
+  navArea = null;
+  boardBody.innerHTML = '';
+  resultEl.classList.remove('show','win','lose');
+  guessesLeftEl.textContent = `${MAX_GUESSES} guesses remaining`;
+  renderPips();
+  renderNav();
+}
+
+newGameBtn.addEventListener('click', newGame);
+newGame();
+</script>
+</body>
+</html>
