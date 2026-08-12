@@ -3,7 +3,7 @@ const REALM_SPATIAL = "The Spatial System";
 
 const DIFF_ORDER = [
   "Easy","Medium","Hard","Difficult","Challenging","Intense",
-  "Remorseless","Insane","Extreme","Terrifying","Horrific","Unreal","Catastrophic"
+  "Remorseless","Insane","Extreme","Terrifying","Catastrophic","Horrific","Unreal"
 ];
 
 const TOWERS = [
