@@ -11,6 +11,12 @@
     --gray:#767676;
     --mid:#cfcfcf;
     --border:#000000;
+    --green:#2e8b3d;
+    --green-bg:#e3f3e5;
+    --yellow:#b8960c;
+    --yellow-bg:#fff3c4;
+    --red:#b3261e;
+    --red-bg:#fbe4e2;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
   }
   *{box-sizing:border-box;}
@@ -184,9 +190,23 @@
     border:1px solid #000;
     width:100%;
   }
-  .cell.hit{background:#000;color:#fff;}
-  .cell.part{background:var(--mid);color:#000;border-color:#666;}
-  .cell.miss{background:#fff;color:#000;}
+  .cell.hit{background:var(--green-bg);color:var(--green);border-color:var(--green);}
+  .cell.part{background:var(--yellow-bg);color:var(--yellow);border-color:var(--yellow);}
+  .cell.miss{background:var(--red-bg);color:var(--red);border-color:var(--red);}
+  .cell.mixed{background:#fff;color:#000;border-color:#000;}
+  .name-match{
+    background:var(--yellow-bg);
+    color:var(--yellow);
+    border:1px solid var(--yellow);
+    padding:1px 5px;
+    font-weight:bold;
+  }
+  .name-miss{
+    background:var(--red-bg);
+    color:var(--red);
+    border:1px solid var(--red);
+    padding:1px 5px;
+  }
   .tower-name-cell{font-weight:bold;}
   .arrow{font-size:11px;opacity:.85;}
 
@@ -513,20 +533,28 @@ function makeRow(guess){
     guess.creators.every(c=>targetCreators.has(c));
   const overlap = guess.creators.some(c=>targetCreators.has(c));
   const creatorStatus = sameSet ? 'hit' : overlap ? 'part' : 'miss';
+  const creatorHtml = sameSet
+    ? guess.creators.join(', ')
+    : guess.creators.map(name =>
+        targetCreators.has(name)
+          ? `<span class="name-match">${name}</span>`
+          : `<span class="name-miss">${name}</span>`
+      ).join(', ');
 
   const cells = {
     type: { status: typeStatus, html: guess.type },
     realm: { status: realmStatus, html: guess.realm },
     area: { status: areaStatus, html: guess.area },
     difficulty: { status: diffStatus, html: diffLabel(guess) + (diffStatus!=='hit' ? ' ' + diffArrow(guess,target) : '') },
-    creator: { status: creatorStatus, html: guess.creators.join(', ') }
+    creator: { status: creatorStatus, html: creatorHtml }
   };
 
   let rowHtml = `<td data-label="Tower"><span class="tower-name-cell">${guess.name}</span></td>`;
   activeColumns.forEach(key=>{
     const c = cells[key];
     const label = ALL_COLUMNS.find(col=>col.key===key).label;
-    rowHtml += `<td data-label="${label}"><span class="cell ${cellClass(c.status)}">${symbol(c.status)} ${c.html}</span></td>`;
+    const cls = (key === 'creator' && c.status === 'part') ? 'mixed' : cellClass(c.status);
+    rowHtml += `<td data-label="${label}"><span class="cell ${cls}">${symbol(c.status)} ${c.html}</span></td>`;
   });
   tr.innerHTML = rowHtml;
 
