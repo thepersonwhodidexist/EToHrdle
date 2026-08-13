@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ETordle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#ffffff;
@@ -142,19 +145,17 @@
 
   .nav-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(140px,1fr));
-    gap:8px;
+    grid-template-columns:repeat(auto-fill, minmax(210px,1fr));
+    gap:10px;
     align-items:start;
   }
   .nav-grid.towers{
     grid-template-columns:repeat(auto-fill, minmax(170px,1fr));
   }
   .ring-card{
-    border:1px solid var(--border);
-    padding:6px;
     display:flex;
     flex-direction:column;
-    gap:6px;
+    gap:10px;
   }
   .nav-btn{
     background:var(--bg);
@@ -175,22 +176,13 @@
     padding:8px 10px;
     align-self:center;
   }
-  .nav-btn .btn-emblem{
-    height:auto;
-    width:44px;
-    align-self:stretch;
-    object-fit:cover;
-    opacity:.55;
-    flex-shrink:0;
+  .nav-btn .btn-inner{
+    display:flex;
+    align-items:center;
+    width:100%;
+    height:100%;
   }
   .nav-btn:hover{background:var(--fg);color:var(--bg);}
-  .nav-btn.sub{
-    border-style:dashed;
-    font-size:11px;
-  }
-  .nav-btn.sub .btn-label{
-    padding:6px 8px 6px 16px;
-  }
   .nav-btn.empty{opacity:.3;cursor:default;}
   .nav-btn.empty:hover{background:var(--bg);color:var(--fg);}
   .nav-btn.tower{
@@ -200,19 +192,105 @@
     gap:2px;
     padding:10px 14px;
   }
+  .nav-btn.tower .t-meta{font-size:10px;opacity:.75;}
+
+  /* ---- themed banner buttons (realm / ring / zone) ---- */
   .nav-btn.themed{
-    color:#fff;
-    border-color:rgba(255,255,255,.65);
-    background-size:cover;
-    background-position:center;
-    text-shadow:0 1px 3px rgba(0,0,0,.9), 0 0 2px rgba(0,0,0,.9);
-    position:relative;
+    border:none;
+    background:#e8b400;
+    padding:3px;
+    height:52px;
+    cursor:pointer;
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 0 100%);
+    box-shadow: 3px 4px 0 rgba(0,0,0,.35);
+    transition: filter .1s ease;
   }
   .nav-btn.themed:hover{
-    filter:brightness(1.25);
-    color:#fff;
+    filter:brightness(1.08);
+    background:#e8b400;
   }
-  .nav-btn.tower .t-meta{font-size:10px;opacity:.75;}
+  .nav-btn.sub.themed{
+    height:40px;
+  }
+  .nav-btn.themed .btn-inner{
+    position:relative;
+    flex:1;
+    display:flex;
+    align-items:center;
+    height:100%;
+    background:#fff;
+    clip-path: polygon(0 0, calc(100% - 19px) 0, 100% 50%, calc(100% - 19px) 100%, 0 100%);
+    overflow:hidden;
+  }
+  .nav-btn.themed .btn-inner::after{
+    content:'';
+    position:absolute;
+    inset:0;
+    background-image:var(--area-bg);
+    background-size:cover;
+    background-position:center;
+    -webkit-mask-image:linear-gradient(to right, transparent 0%, transparent 38%, #000 78%);
+    mask-image:linear-gradient(to right, transparent 0%, transparent 38%, #000 78%);
+    pointer-events:none;
+  }
+  .emblem-badge{
+    position:relative;
+    z-index:1;
+    width:34px;
+    height:34px;
+    min-width:34px;
+    border-radius:50%;
+    background:#fff;
+    border:2px solid #1a1a1a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin:0 8px 0 8px;
+    box-shadow:0 1px 2px rgba(0,0,0,.35);
+  }
+  .emblem-badge img{
+    width:20px;
+    height:20px;
+    object-fit:contain;
+  }
+  .nav-btn.sub .emblem-badge{
+    width:26px;
+    height:26px;
+    min-width:26px;
+    margin:0 6px 0 8px;
+  }
+  .nav-btn.sub .emblem-badge img{width:15px;height:15px;}
+  .nav-btn.themed .btn-label{
+    position:relative;
+    z-index:1;
+    padding:0 12px 0 0;
+    font-family:'Baloo 2', 'Comic Sans MS', sans-serif;
+    font-weight:800;
+    font-size:17px;
+    color:#3fa93f;
+    -webkit-text-stroke:1px #163a16;
+    text-shadow:1px 1px 0 #163a16, -1px 1px 0 #163a16, 1px -1px 0 #163a16, -1px -1px 0 #163a16;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .nav-btn.sub.themed .btn-label{
+    font-size:13px;
+  }
+  .nav-btn.themed.empty{
+    background:#9a9a9a;
+    box-shadow:none;
+  }
+  .nav-btn.themed.empty .btn-inner{background:var(--mid);}
+  .nav-btn.themed.empty .btn-inner::after{display:none;}
+  .nav-btn.themed.empty .btn-label{
+    color:var(--gray);
+    -webkit-text-stroke:0;
+    text-shadow:none;
+    font-family:inherit;
+    font-weight:normal;
+    font-size:12px;
+  }
 
   .guesses-left{
     text-align:center;
@@ -485,7 +563,7 @@ menuBtn.addEventListener('click', ()=>{
 
 function renderBreadcrumb(){
   const parts = [];
-  parts.push(`<button class="crumb-btn" data-nav="realm">Select</button>`);
+  parts.push(`<button class="crumb-btn" data-nav="realm">Start</button>`);
   if(navRealm){
     parts.push(`<span class="crumb-sep">/</span>`);
     parts.push(`<button class="crumb-btn" data-nav="area">${navRealm}</button>`);
@@ -544,25 +622,16 @@ const AREA_THEMES = {
 
 function buttonInnerHTML(label, displayText){
   const emblem = AREA_EMBLEMS[label];
-  let html = '';
-  if(emblem){
-    html += `<img class="btn-emblem" src="${emblem}" alt="">`;
-  }
-  html += `<span class="btn-label">${displayText}</span>`;
-  return html;
+  const emblemHtml = emblem ? `<span class="emblem-badge"><img src="${emblem}" alt=""></span>` : '';
+  return `<span class="btn-inner">${emblemHtml}<span class="btn-label">${displayText}</span></span>`;
 }
 
 function applyAreaTheme(btn, label){
   const img = AREA_IMAGES[label];
-  if(img){
+  const bg = img ? `url('${img}')` : AREA_THEMES[label];
+  if(bg){
     btn.classList.add('themed');
-    btn.style.backgroundImage = `linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)), url('${img}')`;
-    return;
-  }
-  const gradient = AREA_THEMES[label];
-  if(gradient){
-    btn.classList.add('themed');
-    btn.style.backgroundImage = gradient;
+    btn.style.setProperty('--area-bg', bg);
   }
 }
 
