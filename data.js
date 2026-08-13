@@ -297,3 +297,11 @@ const AREA_GROUPS = [
   { realm: REALM_SPATIAL, main:"Zone 9 - Singularity" },
   { realm: REALM_SPATIAL, main:"Zone 10 - Interstellar Shore" }
 ];
+
+// Background images shown behind area/realm buttons in index.html.
+// Key = exact area/realm label (must match AREA_GROUPS or REALM_* above).
+// Path is relative to index.html. Any area without an entry falls back
+// to a generated gradient instead.
+const AREA_IMAGES = {
+  "Ring 0 - Purgatorio": "images/ring0.png"
+};
