@@ -160,21 +160,26 @@
     background:var(--bg);
     border:1px solid var(--border);
     color:var(--fg);
-    padding:8px 10px;
+    padding:0;
     font-size:12px;
     cursor:pointer;
     text-align:left;
     width:100%;
     display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:8px;
+    align-items:stretch;
+    gap:0;
+    overflow:hidden;
   }
-  .nav-btn .btn-label{flex:1;}
+  .nav-btn .btn-label{
+    flex:1;
+    padding:8px 10px;
+    align-self:center;
+  }
   .nav-btn .btn-emblem{
-    width:20px;
-    height:20px;
-    object-fit:contain;
+    height:auto;
+    width:44px;
+    align-self:stretch;
+    object-fit:cover;
     opacity:.55;
     flex-shrink:0;
   }
@@ -182,6 +187,8 @@
   .nav-btn.sub{
     border-style:dashed;
     font-size:11px;
+  }
+  .nav-btn.sub .btn-label{
     padding:6px 8px 6px 16px;
   }
   .nav-btn.empty{opacity:.3;cursor:default;}
@@ -191,6 +198,7 @@
     flex-direction:column;
     align-items:flex-start;
     gap:2px;
+    padding:10px 14px;
   }
   .nav-btn.themed{
     color:#fff;
@@ -477,7 +485,7 @@ menuBtn.addEventListener('click', ()=>{
 
 function renderBreadcrumb(){
   const parts = [];
-  parts.push(`<button class="crumb-btn" data-nav="realm">Select</button>`);
+  parts.push(`<button class="crumb-btn" data-nav="realm">Start</button>`);
   if(navRealm){
     parts.push(`<span class="crumb-sep">/</span>`);
     parts.push(`<button class="crumb-btn" data-nav="area">${navRealm}</button>`);
@@ -536,10 +544,11 @@ const AREA_THEMES = {
 
 function buttonInnerHTML(label, displayText){
   const emblem = AREA_EMBLEMS[label];
-  let html = `<span class="btn-label">${displayText}</span>`;
+  let html = '';
   if(emblem){
     html += `<img class="btn-emblem" src="${emblem}" alt="">`;
   }
+  html += `<span class="btn-label">${displayText}</span>`;
   return html;
 }
 
