@@ -180,6 +180,18 @@
     align-items:flex-start;
     gap:2px;
   }
+  .nav-btn.themed{
+    color:#fff;
+    border-color:rgba(255,255,255,.65);
+    background-size:cover;
+    background-position:center;
+    text-shadow:0 1px 3px rgba(0,0,0,.9), 0 0 2px rgba(0,0,0,.9);
+    position:relative;
+  }
+  .nav-btn.themed:hover{
+    filter:brightness(1.25);
+    color:#fff;
+  }
   .nav-btn.tower .t-meta{font-size:10px;opacity:.75;}
 
   .guesses-left{
@@ -472,6 +484,52 @@ function renderBreadcrumb(){
   });
 }
 
+/* ---------- area background themes ---------- */
+
+const AREA_THEMES = {
+  "The Great Inferno": "linear-gradient(135deg,#3a0a05,#c1440e)",
+  "The Spatial System": "linear-gradient(135deg,#03122e,#1f5fa8)",
+
+  "Ring 0 - Purgatorio": "linear-gradient(135deg,#4a3618,#a9793f)",
+  "Ring 1 - Limbo": "linear-gradient(135deg,#2c2c34,#6d6d7a)",
+  "Forgotten Ridge": "linear-gradient(135deg,#22301a,#54683a)",
+  "Ring 2 - Desire": "linear-gradient(135deg,#5c1010,#b8385a)",
+  "Garden of Eeshöl": "linear-gradient(135deg,#123018,#3c8a52)",
+  "Ring 3 - Gluttony": "linear-gradient(135deg,#4a1006,#a3421a)",
+  "Ring 4 - Greed": "linear-gradient(135deg,#132b12,#3f7a3a)",
+  "Silent Abyss": "linear-gradient(135deg,#040611,#161c3a)",
+  "Ring 5 - Wrath": "linear-gradient(135deg,#420505,#b31313)",
+  "Lost River": "linear-gradient(135deg,#062a2e,#1c8a92)",
+  "Ring 6 - Heresy": "linear-gradient(135deg,#331b0a,#8a4a1a)",
+  "Ashen Towerworks": "linear-gradient(135deg,#26221f,#5c5650)",
+  "Ring 7 - Violence": "linear-gradient(135deg,#360a1a,#96204f)",
+  "Ring 8 - Fraud": "linear-gradient(135deg,#1c0e33,#5a2f96)",
+  "The Starlit Archives": "linear-gradient(135deg,#04061c,#232a63)",
+  "Ring 9 - Treachery": "linear-gradient(135deg,#0a0a12,#232840)",
+
+  "Zone 1 - Sea": "linear-gradient(135deg,#032a33,#0f8fa3)",
+  "Steelspire Horizon": "linear-gradient(135deg,#232b33,#5c6f7d)",
+  "Zone 2 - Surface": "linear-gradient(135deg,#12331a,#3f8a4a)",
+  "Arcane Area": "linear-gradient(135deg,#2a0e3a,#7d2fb8)",
+  "Zone 3 - Sky": "linear-gradient(135deg,#08315c,#3f8fd6)",
+  "Paradise Atoll": "linear-gradient(135deg,#053a2e,#1fb391)",
+  "Zone 4 - Exosphere": "linear-gradient(135deg,#0a1030,#2f3fa3)",
+  "Zone 5 - The Moon": "linear-gradient(135deg,#20242e,#565d6e)",
+  "Zone 6 - Mars": "linear-gradient(135deg,#3a1206,#a3441a)",
+  "Zone 7 - Asteroid Belt": "linear-gradient(135deg,#1a1a20,#4a4a56)",
+  "Zone 8 - Pluto": "linear-gradient(135deg,#0e1533,#2f3f7d)",
+  "Zone 9 - Singularity": "linear-gradient(135deg,#10041c,#3a0f5c)",
+  "Zone 10 - Interstellar Shore": "linear-gradient(135deg,#0a0618,#2a1050)"
+};
+
+function applyAreaTheme(btn, label){
+  const gradient = AREA_THEMES[label];
+  if(gradient){
+    btn.classList.add('themed');
+    btn.style.backgroundImage = gradient;
+  }
+}
+
 function renderNav(){
   if(over){
     navGrid.innerHTML = '';
@@ -489,6 +547,7 @@ function renderNav(){
       const b = document.createElement('button');
       b.className = 'nav-btn';
       b.textContent = r;
+      applyAreaTheme(b, r);
       b.addEventListener('click', ()=>{ navRealm = r; navArea = null; renderNav(); });
       navGrid.appendChild(b);
     });
@@ -508,6 +567,7 @@ function renderNav(){
       if(mainCount===0){
         mainBtn.disabled = true;
       } else {
+        applyAreaTheme(mainBtn, g.main);
         mainBtn.addEventListener('click', ()=>{ navArea = g.main; renderNav(); });
       }
       card.appendChild(mainBtn);
@@ -520,6 +580,7 @@ function renderNav(){
         if(subCount===0){
           subBtn.disabled = true;
         } else {
+          applyAreaTheme(subBtn, g.sub);
           subBtn.addEventListener('click', ()=>{ navArea = g.sub; renderNav(); });
         }
         card.appendChild(subBtn);
