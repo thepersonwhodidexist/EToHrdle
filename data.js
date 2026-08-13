@@ -305,5 +305,6 @@ const AREA_IMAGES = {
 };
 
 const AREA_EMBLEMS = {
-  "Ring 0 - Purgatorio": "images/emblems/ring0emblem.png"
+  "Ring 0 - Purgatorio": "images/emblems/ring0emblem.png",
+  "Ring 1 - Limbo": "images/emblems/ring1emblem.png"
 };
