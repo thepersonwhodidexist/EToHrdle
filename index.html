@@ -165,6 +165,18 @@
     cursor:pointer;
     text-align:left;
     width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+  }
+  .nav-btn .btn-label{flex:1;}
+  .nav-btn .btn-emblem{
+    width:20px;
+    height:20px;
+    object-fit:contain;
+    opacity:.55;
+    flex-shrink:0;
   }
   .nav-btn:hover{background:var(--fg);color:var(--bg);}
   .nav-btn.sub{
@@ -316,7 +328,7 @@
     </div>
 
     <div class="btn-row">
-      <button id="start-btn">Select</button>
+      <button id="start-btn">Start</button>
     </div>
   </div>
 
@@ -465,7 +477,7 @@ menuBtn.addEventListener('click', ()=>{
 
 function renderBreadcrumb(){
   const parts = [];
-  parts.push(`<button class="crumb-btn" data-nav="realm">Start</button>`);
+  parts.push(`<button class="crumb-btn" data-nav="realm">Select</button>`);
   if(navRealm){
     parts.push(`<span class="crumb-sep">/</span>`);
     parts.push(`<button class="crumb-btn" data-nav="area">${navRealm}</button>`);
@@ -522,6 +534,15 @@ const AREA_THEMES = {
   "Zone 10 - Interstellar Shore": "linear-gradient(135deg,#0a0618,#2a1050)"
 };
 
+function buttonInnerHTML(label, displayText){
+  const emblem = AREA_EMBLEMS[label];
+  let html = `<span class="btn-label">${displayText}</span>`;
+  if(emblem){
+    html += `<img class="btn-emblem" src="${emblem}" alt="">`;
+  }
+  return html;
+}
+
 function applyAreaTheme(btn, label){
   const img = AREA_IMAGES[label];
   if(img){
@@ -552,7 +573,7 @@ function renderNav(){
     [REALM_INFERNO, REALM_SPATIAL].forEach(r=>{
       const b = document.createElement('button');
       b.className = 'nav-btn';
-      b.textContent = r;
+      b.innerHTML = buttonInnerHTML(r, r);
       applyAreaTheme(b, r);
       b.addEventListener('click', ()=>{ navRealm = r; navArea = null; renderNav(); });
       navGrid.appendChild(b);
@@ -569,7 +590,7 @@ function renderNav(){
       const mainCount = towersInArea(g.main).length;
       const mainBtn = document.createElement('button');
       mainBtn.className = 'nav-btn' + (mainCount===0 ? ' empty' : '');
-      mainBtn.textContent = g.main;
+      mainBtn.innerHTML = buttonInnerHTML(g.main, g.main);
       if(mainCount===0){
         mainBtn.disabled = true;
       } else {
@@ -582,7 +603,7 @@ function renderNav(){
         const subCount = towersInArea(g.sub).length;
         const subBtn = document.createElement('button');
         subBtn.className = 'nav-btn sub' + (subCount===0 ? ' empty' : '');
-        subBtn.textContent = `↳ ${g.sub}`;
+        subBtn.innerHTML = buttonInnerHTML(g.sub, `↳ ${g.sub}`);
         if(subCount===0){
           subBtn.disabled = true;
         } else {
