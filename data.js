@@ -303,6 +303,6 @@ const AREA_GROUPS = [
 // Path is relative to index.html. Any area without an entry falls back
 // to a generated gradient instead.
 const AREA_IMAGES = {
-  "Ring 0 - Purgatorio": "images/ring0.png"
+  "Ring 0 - Purgatorio": "images/ring0.png",
   "Ring 1 - Limbo": "images/ring1.png"
 };
