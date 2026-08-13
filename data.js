@@ -304,4 +304,5 @@ const AREA_GROUPS = [
 // to a generated gradient instead.
 const AREA_IMAGES = {
   "Ring 0 - Purgatorio": "images/ring0.png"
+  "Ring 1 - Limbo": "images/ring1.png"
 };
