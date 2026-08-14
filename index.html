@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ETordle</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#ffffff;
@@ -107,6 +104,41 @@
     cursor:pointer;
   }
   .hint-toggles input{accent-color:var(--fg);}
+  .filter-grid{
+    columns:2;
+    column-gap:16px;
+    max-height:220px;
+    overflow-y:auto;
+    border:1px solid var(--mid);
+    padding:8px 10px;
+  }
+  .filter-grid label{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-size:12px;
+    cursor:pointer;
+    break-inside:avoid;
+    margin-bottom:6px;
+  }
+  .filter-grid input{accent-color:var(--fg);}
+  .mini-btn{
+    background:none;
+    border:1px solid var(--border);
+    color:var(--fg);
+    padding:1px 8px;
+    font-size:10px;
+    margin-left:6px;
+    cursor:pointer;
+  }
+  .mini-btn:hover{background:var(--fg);color:var(--bg);}
+  .filter-warning{
+    color:var(--red);
+    font-size:12px;
+    text-align:center;
+    margin:4px 0 0;
+    min-height:14px;
+  }
 
   button{
     background:var(--bg);
@@ -145,8 +177,8 @@
 
   .nav-grid{
     display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(210px,1fr));
-    gap:10px;
+    grid-template-columns:repeat(auto-fill, minmax(140px,1fr));
+    gap:8px;
     align-items:start;
   }
   .nav-grid.towers{
@@ -176,13 +208,22 @@
     padding:8px 10px;
     align-self:center;
   }
-  .nav-btn .btn-inner{
-    display:flex;
-    align-items:center;
-    width:100%;
-    height:100%;
+  .nav-btn .btn-emblem{
+    height:auto;
+    width:44px;
+    align-self:stretch;
+    object-fit:cover;
+    opacity:.55;
+    flex-shrink:0;
   }
   .nav-btn:hover{background:var(--fg);color:var(--bg);}
+  .nav-btn.sub{
+    border-style:dashed;
+    font-size:11px;
+  }
+  .nav-btn.sub .btn-label{
+    padding:6px 8px 6px 16px;
+  }
   .nav-btn.empty{opacity:.3;cursor:default;}
   .nav-btn.empty:hover{background:var(--bg);color:var(--fg);}
   .nav-btn.tower{
@@ -192,105 +233,19 @@
     gap:2px;
     padding:10px 14px;
   }
-  .nav-btn.tower .t-meta{font-size:10px;opacity:.75;}
-
-  /* ---- themed banner buttons (realm / ring / zone) ---- */
   .nav-btn.themed{
-    border:none;
-    background:#e8b400;
-    padding:3px;
-    height:52px;
-    cursor:pointer;
-    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 50%, calc(100% - 22px) 100%, 0 100%);
-    box-shadow: 3px 4px 0 rgba(0,0,0,.35);
-    transition: filter .1s ease;
-  }
-  .nav-btn.themed:hover{
-    filter:brightness(1.08);
-    background:#e8b400;
-  }
-  .nav-btn.sub.themed{
-    height:40px;
-  }
-  .nav-btn.themed .btn-inner{
-    position:relative;
-    flex:1;
-    display:flex;
-    align-items:center;
-    height:100%;
-    background:#fff;
-    clip-path: polygon(0 0, calc(100% - 19px) 0, 100% 50%, calc(100% - 19px) 100%, 0 100%);
-    overflow:hidden;
-  }
-  .nav-btn.themed .btn-inner::after{
-    content:'';
-    position:absolute;
-    inset:0;
-    background-image:var(--area-bg);
+    color:#fff;
+    border-color:rgba(255,255,255,.65);
     background-size:cover;
     background-position:center;
-    -webkit-mask-image:linear-gradient(to right, transparent 0%, transparent 38%, #000 78%);
-    mask-image:linear-gradient(to right, transparent 0%, transparent 38%, #000 78%);
-    pointer-events:none;
-  }
-  .emblem-badge{
+    text-shadow:0 1px 3px rgba(0,0,0,.9), 0 0 2px rgba(0,0,0,.9);
     position:relative;
-    z-index:1;
-    width:34px;
-    height:34px;
-    min-width:34px;
-    border-radius:50%;
-    background:#fff;
-    border:2px solid #1a1a1a;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    margin:0 8px 0 8px;
-    box-shadow:0 1px 2px rgba(0,0,0,.35);
   }
-  .emblem-badge img{
-    width:20px;
-    height:20px;
-    object-fit:contain;
+  .nav-btn.themed:hover{
+    filter:brightness(1.25);
+    color:#fff;
   }
-  .nav-btn.sub .emblem-badge{
-    width:26px;
-    height:26px;
-    min-width:26px;
-    margin:0 6px 0 8px;
-  }
-  .nav-btn.sub .emblem-badge img{width:15px;height:15px;}
-  .nav-btn.themed .btn-label{
-    position:relative;
-    z-index:1;
-    padding:0 12px 0 0;
-    font-family:'Baloo 2', 'Comic Sans MS', sans-serif;
-    font-weight:800;
-    font-size:17px;
-    color:#3fa93f;
-    -webkit-text-stroke:1px #163a16;
-    text-shadow:1px 1px 0 #163a16, -1px 1px 0 #163a16, 1px -1px 0 #163a16, -1px -1px 0 #163a16;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-  .nav-btn.sub.themed .btn-label{
-    font-size:13px;
-  }
-  .nav-btn.themed.empty{
-    background:#9a9a9a;
-    box-shadow:none;
-  }
-  .nav-btn.themed.empty .btn-inner{background:var(--mid);}
-  .nav-btn.themed.empty .btn-inner::after{display:none;}
-  .nav-btn.themed.empty .btn-label{
-    color:var(--gray);
-    -webkit-text-stroke:0;
-    text-shadow:none;
-    font-family:inherit;
-    font-weight:normal;
-    font-size:12px;
-  }
+  .nav-btn.tower .t-meta{font-size:10px;opacity:.75;}
 
   .guesses-left{
     text-align:center;
@@ -413,6 +368,44 @@
       </div>
     </div>
 
+    <div class="settings-row">
+      <span class="settings-label">
+        Realms
+        <button type="button" class="mini-btn" data-target=".realm-toggle" data-value="all">All</button>
+        <button type="button" class="mini-btn" data-target=".realm-toggle" data-value="none">None</button>
+      </span>
+      <div class="hint-toggles" id="realm-toggles"></div>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">
+        Rings / Zones
+        <button type="button" class="mini-btn" data-target=".area-toggle" data-value="all">All</button>
+        <button type="button" class="mini-btn" data-target=".area-toggle" data-value="none">None</button>
+      </span>
+      <div class="filter-grid" id="area-toggles"></div>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">
+        Difficulties
+        <button type="button" class="mini-btn" data-target=".difficulty-toggle" data-value="all">All</button>
+        <button type="button" class="mini-btn" data-target=".difficulty-toggle" data-value="none">None</button>
+      </span>
+      <div class="filter-grid" id="difficulty-toggles"></div>
+    </div>
+
+    <div class="settings-row">
+      <span class="settings-label">
+        Tower type
+        <button type="button" class="mini-btn" data-target=".type-toggle" data-value="all">All</button>
+        <button type="button" class="mini-btn" data-target=".type-toggle" data-value="none">None</button>
+      </span>
+      <div class="hint-toggles" id="type-toggles"></div>
+    </div>
+
+    <p class="filter-warning" id="filter-warning"></p>
+
     <div class="btn-row">
       <button id="start-btn">Start</button>
     </div>
@@ -464,6 +457,7 @@ const ALL_COLUMNS = [
 
 let MAX_GUESSES = 3;
 let activeColumns = ALL_COLUMNS.map(c=>c.key);
+let activePool = TOWERS;
 
 let target = null;
 let guessesUsed = 0;
@@ -521,7 +515,7 @@ function areaKey(fullLabel){
 
 function towersInArea(fullLabel){
   const key = areaKey(fullLabel);
-  return TOWERS.filter(t=>t.area === key);
+  return activePool.filter(t=>t.area === key);
 }
 
 function symbol(status){
@@ -539,6 +533,46 @@ function buildHeader(){
     activeColumns.map(k => `<th>${ALL_COLUMNS.find(c=>c.key===k).label}</th>`).join('');
 }
 
+function populateFilterUI(){
+  const realmDiv = document.getElementById('realm-toggles');
+  [REALM_INFERNO, REALM_SPATIAL].forEach(r=>{
+    realmDiv.insertAdjacentHTML('beforeend',
+      `<label><input type="checkbox" class="realm-toggle" value="${r}" checked> ${r}</label>`);
+  });
+
+  const areaDiv = document.getElementById('area-toggles');
+  AREA_GROUPS.forEach(g=>{
+    if(TOWERS.some(t=>t.area === areaKey(g.main))){
+      areaDiv.insertAdjacentHTML('beforeend',
+        `<label><input type="checkbox" class="area-toggle" value="${g.main}" checked> ${g.main}</label>`);
+    }
+    if(g.sub && TOWERS.some(t=>t.area === areaKey(g.sub))){
+      areaDiv.insertAdjacentHTML('beforeend',
+        `<label><input type="checkbox" class="area-toggle" value="${g.sub}" checked> ↳ ${g.sub}</label>`);
+    }
+  });
+
+  const diffDiv = document.getElementById('difficulty-toggles');
+  DIFF_ORDER.filter(d => TOWERS.some(t=>t.difficulty === d)).forEach(d=>{
+    diffDiv.insertAdjacentHTML('beforeend',
+      `<label><input type="checkbox" class="difficulty-toggle" value="${d}" checked> ${d}</label>`);
+  });
+
+  const typeDiv = document.getElementById('type-toggles');
+  Array.from(new Set(TOWERS.map(t=>t.type))).forEach(ty=>{
+    typeDiv.insertAdjacentHTML('beforeend',
+      `<label><input type="checkbox" class="type-toggle" value="${ty}" checked> ${ty}</label>`);
+  });
+
+  document.querySelectorAll('.mini-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const checked = btn.dataset.value === 'all';
+      document.querySelectorAll(btn.dataset.target).forEach(cb=>{ cb.checked = checked; });
+    });
+  });
+}
+populateFilterUI();
+
 startBtn.addEventListener('click', ()=>{
   let n = parseInt(guessCountInput.value, 10);
   if(isNaN(n) || n < 1) n = 1;
@@ -547,6 +581,26 @@ startBtn.addEventListener('click', ()=>{
   guessCountInput.value = n;
 
   activeColumns = Array.from(hintToggles).filter(cb=>cb.checked).map(cb=>cb.value);
+
+  const enabledRealms = new Set(Array.from(document.querySelectorAll('.realm-toggle:checked')).map(cb=>cb.value));
+  const enabledAreaKeys = new Set(Array.from(document.querySelectorAll('.area-toggle:checked')).map(cb=>areaKey(cb.value)));
+  const enabledDifficulties = new Set(Array.from(document.querySelectorAll('.difficulty-toggle:checked')).map(cb=>cb.value));
+  const enabledTypes = new Set(Array.from(document.querySelectorAll('.type-toggle:checked')).map(cb=>cb.value));
+
+  const pool = TOWERS.filter(t=>
+    enabledRealms.has(t.realm) &&
+    enabledAreaKeys.has(t.area) &&
+    enabledDifficulties.has(t.difficulty) &&
+    enabledTypes.has(t.type)
+  );
+
+  const warningEl = document.getElementById('filter-warning');
+  if(pool.length === 0){
+    warningEl.textContent = 'No towers match the current filters — enable at least one option in each category.';
+    return;
+  }
+  warningEl.textContent = '';
+  activePool = pool;
 
   buildHeader();
   menuScreen.style.display = 'none';
@@ -622,16 +676,25 @@ const AREA_THEMES = {
 
 function buttonInnerHTML(label, displayText){
   const emblem = AREA_EMBLEMS[label];
-  const emblemHtml = emblem ? `<span class="emblem-badge"><img src="${emblem}" alt=""></span>` : '';
-  return `<span class="btn-inner">${emblemHtml}<span class="btn-label">${displayText}</span></span>`;
+  let html = '';
+  if(emblem){
+    html += `<img class="btn-emblem" src="${emblem}" alt="">`;
+  }
+  html += `<span class="btn-label">${displayText}</span>`;
+  return html;
 }
 
 function applyAreaTheme(btn, label){
   const img = AREA_IMAGES[label];
-  const bg = img ? `url('${img}')` : AREA_THEMES[label];
-  if(bg){
+  if(img){
     btn.classList.add('themed');
-    btn.style.setProperty('--area-bg', bg);
+    btn.style.backgroundImage = `linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.45)), url('${img}')`;
+    return;
+  }
+  const gradient = AREA_THEMES[label];
+  if(gradient){
+    btn.classList.add('themed');
+    btn.style.backgroundImage = gradient;
   }
 }
 
@@ -649,11 +712,16 @@ function renderNav(){
   if(!navRealm){
     navTitle.textContent = 'Choose a realm';
     [REALM_INFERNO, REALM_SPATIAL].forEach(r=>{
+      const hasTowers = activePool.some(t=>t.realm === r);
       const b = document.createElement('button');
-      b.className = 'nav-btn';
+      b.className = 'nav-btn' + (hasTowers ? '' : ' empty');
       b.innerHTML = buttonInnerHTML(r, r);
-      applyAreaTheme(b, r);
-      b.addEventListener('click', ()=>{ navRealm = r; navArea = null; renderNav(); });
+      if(hasTowers){
+        applyAreaTheme(b, r);
+        b.addEventListener('click', ()=>{ navRealm = r; navArea = null; renderNav(); });
+      } else {
+        b.disabled = true;
+      }
       navGrid.appendChild(b);
     });
     return;
@@ -813,7 +881,7 @@ function handleGuess(guess){
 }
 
 function newGame(){
-  target = TOWERS[Math.floor(Math.random() * TOWERS.length)];
+  target = activePool[Math.floor(Math.random() * activePool.length)];
   guessesUsed = 0;
   over = false;
   navRealm = null;
