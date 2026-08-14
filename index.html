@@ -556,13 +556,13 @@ function populateFilterUI(){
   });
 
   const diffDiv = document.getElementById('difficulty-toggles');
-  DIFF_ORDER.filter(d => TOWERS.some(t=>t.difficulty === d)).forEach(d=>{
+  DIFF_ORDER.forEach(d=>{
     diffDiv.insertAdjacentHTML('beforeend',
       `<label><input type="checkbox" class="difficulty-toggle" value="${d}" checked> ${d}</label>`);
   });
 
   const typeDiv = document.getElementById('type-toggles');
-  Array.from(new Set(TOWERS.map(t=>t.type))).forEach(ty=>{
+  TOWER_TYPES.forEach(ty=>{
     typeDiv.insertAdjacentHTML('beforeend',
       `<label><input type="checkbox" class="type-toggle" value="${ty}" checked> ${ty}</label>`);
   });
