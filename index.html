@@ -193,6 +193,25 @@
   .nav-grid.towers{
     grid-template-columns:repeat(auto-fill, minmax(170px,1fr));
   }
+  .nav-grid.grouped{
+    display:block;
+  }
+  .search-group{margin-bottom:16px;}
+  .search-group:last-child{margin-bottom:0;}
+  .search-group-title{
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.05em;
+    color:var(--gray);
+    margin:0 0 6px;
+    padding-bottom:4px;
+    border-bottom:1px solid var(--mid);
+  }
+  .search-group-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(170px,1fr));
+    gap:8px;
+  }
   .ring-card{
     display:flex;
     flex-direction:column;
@@ -730,7 +749,8 @@ function renderNav(){
     breadcrumbEl.innerHTML = '';
     navTitle.textContent = 'Search results';
     navGrid.innerHTML = '';
-    navGrid.classList.add('towers');
+    navGrid.classList.remove('towers');
+    navGrid.classList.add('grouped');
 
     const matches = activePool.filter(t =>
       t.name.toLowerCase().includes(query) || t.abbr.toLowerCase().includes(query)
@@ -738,16 +758,40 @@ function renderNav(){
 
     if(matches.length === 0){
       const p = document.createElement('p');
-      p.style.cssText = 'grid-column:1/-1;color:var(--gray);font-size:12px;margin:4px 0;';
+      p.style.cssText = 'color:var(--gray);font-size:12px;margin:4px 0;';
       p.textContent = 'No towers match your search.';
       navGrid.appendChild(p);
     } else {
-      matches.forEach(t=>{
-        const b = document.createElement('button');
-        b.className = 'nav-btn tower';
-        b.innerHTML = `<span class="t-name">${t.name}</span><span class="t-meta">${t.abbr} - ${t.type}</span>`;
-        b.addEventListener('click', ()=>{ towerSearchInput.value = ''; handleGuess(t); });
-        navGrid.appendChild(b);
+      const orderedLabels = [];
+      AREA_GROUPS.forEach(g=>{
+        orderedLabels.push(g.main);
+        if(g.sub) orderedLabels.push(g.sub);
+      });
+
+      orderedLabels.forEach(label=>{
+        const key = areaKey(label);
+        const groupMatches = matches.filter(t=>t.area === key);
+        if(groupMatches.length === 0) return;
+
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'search-group';
+
+        const title = document.createElement('p');
+        title.className = 'search-group-title';
+        title.textContent = label;
+        groupDiv.appendChild(title);
+
+        const grid = document.createElement('div');
+        grid.className = 'search-group-grid';
+        groupMatches.forEach(t=>{
+          const b = document.createElement('button');
+          b.className = 'nav-btn tower';
+          b.innerHTML = `<span class="t-name">${t.name}</span><span class="t-meta">${t.abbr} - ${t.type}</span>`;
+          b.addEventListener('click', ()=>{ towerSearchInput.value = ''; handleGuess(t); });
+          grid.appendChild(b);
+        });
+        groupDiv.appendChild(grid);
+        navGrid.appendChild(groupDiv);
       });
     }
     return;
@@ -756,6 +800,7 @@ function renderNav(){
   renderBreadcrumb();
   navGrid.innerHTML = '';
   navGrid.classList.remove('towers');
+  navGrid.classList.remove('grouped');
 
   if(!navRealm){
     navTitle.textContent = 'Choose a realm';
