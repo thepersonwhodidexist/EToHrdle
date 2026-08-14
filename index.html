@@ -219,10 +219,13 @@
   .nav-btn:hover{background:var(--fg);color:var(--bg);}
   .nav-btn.sub{
     border-style:dashed;
-    font-size:11px;
+    font-size:10px;
   }
   .nav-btn.sub .btn-label{
-    padding:6px 8px 6px 16px;
+    padding:4px 6px 4px 12px;
+  }
+  .nav-btn.sub .btn-emblem{
+    width:28px;
   }
   .nav-btn.empty{opacity:.3;cursor:default;}
   .nav-btn.empty:hover{background:var(--bg);color:var(--fg);}
@@ -716,8 +719,8 @@ function renderNav(){
       const b = document.createElement('button');
       b.className = 'nav-btn' + (hasTowers ? '' : ' empty');
       b.innerHTML = buttonInnerHTML(r, r);
+      applyAreaTheme(b, r);
       if(hasTowers){
-        applyAreaTheme(b, r);
         b.addEventListener('click', ()=>{ navRealm = r; navArea = null; renderNav(); });
       } else {
         b.disabled = true;
@@ -737,10 +740,10 @@ function renderNav(){
       const mainBtn = document.createElement('button');
       mainBtn.className = 'nav-btn' + (mainCount===0 ? ' empty' : '');
       mainBtn.innerHTML = buttonInnerHTML(g.main, g.main);
+      applyAreaTheme(mainBtn, g.main);
       if(mainCount===0){
         mainBtn.disabled = true;
       } else {
-        applyAreaTheme(mainBtn, g.main);
         mainBtn.addEventListener('click', ()=>{ navArea = g.main; renderNav(); });
       }
       card.appendChild(mainBtn);
@@ -750,10 +753,10 @@ function renderNav(){
         const subBtn = document.createElement('button');
         subBtn.className = 'nav-btn sub' + (subCount===0 ? ' empty' : '');
         subBtn.innerHTML = buttonInnerHTML(g.sub, `↳ ${g.sub}`);
+        applyAreaTheme(subBtn, g.sub);
         if(subCount===0){
           subBtn.disabled = true;
         } else {
-          applyAreaTheme(subBtn, g.sub);
           subBtn.addEventListener('click', ()=>{ navArea = g.sub; renderNav(); });
         }
         card.appendChild(subBtn);
