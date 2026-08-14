@@ -154,6 +154,15 @@
   .btn-row{display:flex;justify-content:center;gap:8px;margin-top:16px;}
 
   /* ---- navigation drill-down ---- */
+  .search-row{margin-bottom:12px;}
+  .search-row input{
+    width:100%;
+    border:1px solid var(--border);
+    background:var(--bg);
+    color:var(--fg);
+    padding:8px 10px;
+    font-size:13px;
+  }
   .breadcrumb{
     display:flex;
     align-items:center;
@@ -415,6 +424,9 @@
   </div>
 
   <div class="panel" id="game-screen" style="display:none;">
+    <div class="search-row" id="search-row">
+      <input type="text" id="tower-search" placeholder="Search towers..." autocomplete="off">
+    </div>
     <div class="breadcrumb" id="breadcrumb"></div>
     <p class="nav-title" id="nav-title">Choose a realm</p>
     <div class="nav-grid" id="nav-grid"></div>
@@ -502,6 +514,8 @@ const menuBtn = document.getElementById('menu-btn');
 const navGrid = document.getElementById('nav-grid');
 const navTitle = document.getElementById('nav-title');
 const breadcrumbEl = document.getElementById('breadcrumb');
+const searchRow = document.getElementById('search-row');
+const towerSearchInput = document.getElementById('tower-search');
 const boardHead = document.getElementById('board-head');
 const boardBody = document.getElementById('board-body');
 const guessesLeftEl = document.getElementById('guesses-left');
@@ -706,8 +720,39 @@ function renderNav(){
     navGrid.innerHTML = '';
     navTitle.textContent = '';
     breadcrumbEl.innerHTML = '';
+    searchRow.style.display = 'none';
     return;
   }
+  searchRow.style.display = 'block';
+
+  const query = towerSearchInput.value.trim().toLowerCase();
+  if(query){
+    breadcrumbEl.innerHTML = '';
+    navTitle.textContent = 'Search results';
+    navGrid.innerHTML = '';
+    navGrid.classList.add('towers');
+
+    const matches = activePool.filter(t =>
+      t.name.toLowerCase().includes(query) || t.abbr.toLowerCase().includes(query)
+    );
+
+    if(matches.length === 0){
+      const p = document.createElement('p');
+      p.style.cssText = 'grid-column:1/-1;color:var(--gray);font-size:12px;margin:4px 0;';
+      p.textContent = 'No towers match your search.';
+      navGrid.appendChild(p);
+    } else {
+      matches.forEach(t=>{
+        const b = document.createElement('button');
+        b.className = 'nav-btn tower';
+        b.innerHTML = `<span class="t-name">${t.name}</span><span class="t-meta">${t.abbr} - ${t.type}</span>`;
+        b.addEventListener('click', ()=>{ towerSearchInput.value = ''; handleGuess(t); });
+        navGrid.appendChild(b);
+      });
+    }
+    return;
+  }
+
   renderBreadcrumb();
   navGrid.innerHTML = '';
   navGrid.classList.remove('towers');
@@ -889,6 +934,7 @@ function newGame(){
   over = false;
   navRealm = null;
   navArea = null;
+  towerSearchInput.value = '';
   boardBody.innerHTML = '';
   resultEl.classList.remove('show','win','lose');
   resultFact.textContent = '';
@@ -898,6 +944,7 @@ function newGame(){
 }
 
 newGameBtn.addEventListener('click', newGame);
+towerSearchInput.addEventListener('input', renderNav);
 </script>
 </body>
 </html>
