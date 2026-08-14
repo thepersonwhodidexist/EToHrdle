@@ -6,6 +6,8 @@ const DIFF_ORDER = [
   "Remorseless","Insane","Extreme","Terrifying","Catastrophic","Horrific","Unreal"
 ];
 
+const TOWER_TYPES = ["Tower","Citadel","Steeple","Mini Tower"];
+
 const TOWERS = [
   {
     name: "Tower of Genesis", abbr:"ToG", type:"Tower",
@@ -298,14 +300,11 @@ const AREA_GROUPS = [
   { realm: REALM_SPATIAL, main:"Zone 10 - Interstellar Shore" }
 ];
 
+// to a generated gradient instead.
 const AREA_IMAGES = {
-  "Ring 0 - Purgatorio": "images/ring0.png",
-  "Ring 1 - Limbo": "images/ring1.png",
-  "Forgotten Ridge": "images/forgottenridge.png"
+  "Ring 0 - Purgatorio": "images/ring0.png"
 };
 
 const AREA_EMBLEMS = {
-  "Ring 0 - Purgatorio": "images/emblems/ring0emblem.png",
-  "Ring 1 - Limbo": "images/emblems/ring1emblem.png",
-  "Forgotten Ridge": "images/emblems/forgottenridgeemblem.png"
+  // "Forgotten Ridge": "images/emblems/forgottenridge.png"
 };
