@@ -287,6 +287,14 @@
   .pips{display:flex;justify-content:center;gap:6px;margin:0 0 14px;}
   .pip{width:9px;height:9px;border:1px solid var(--border);background:var(--bg);}
   .pip.used{background:var(--fg);}
+  .timer-display{
+    text-align:center;
+    font-size:12px;
+    color:var(--gray);
+    letter-spacing:.05em;
+    margin:-6px 0 14px;
+    font-variant-numeric:tabular-nums;
+  }
 
   /* ---- board ---- */
   table.board{width:100%;border-collapse:collapse;margin-top:10px;}
@@ -452,6 +460,7 @@
 
     <div class="guesses-left" id="guesses-left"></div>
     <div class="pips" id="pips"></div>
+    <div class="timer-display" id="timer-display">0:00</div>
 
     <table class="board" id="board">
       <thead>
@@ -539,6 +548,7 @@ const boardHead = document.getElementById('board-head');
 const boardBody = document.getElementById('board-body');
 const guessesLeftEl = document.getElementById('guesses-left');
 const pipsEl = document.getElementById('pips');
+const timerDisplay = document.getElementById('timer-display');
 const resultEl = document.getElementById('result');
 const resultTitle = document.getElementById('result-title');
 const resultBody = document.getElementById('result-body');
@@ -645,6 +655,7 @@ startBtn.addEventListener('click', ()=>{
 });
 
 menuBtn.addEventListener('click', ()=>{
+  stopTimer();
   gameScreen.style.display = 'none';
   menuScreen.style.display = 'block';
 });
@@ -877,6 +888,40 @@ function renderPips(){
   }
 }
 
+/* ---------- timer ---------- */
+
+let timerInterval = null;
+let startTime = null;
+let finalElapsedMs = null;
+
+function formatTime(ms){
+  const totalSec = Math.max(0, Math.floor(ms / 1000));
+  const m = Math.floor(totalSec / 60);
+  const s = totalSec % 60;
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+function updateTimerDisplay(){
+  if(startTime == null) return;
+  timerDisplay.textContent = formatTime(Date.now() - startTime);
+}
+
+function startTimer(){
+  clearInterval(timerInterval);
+  startTime = Date.now();
+  finalElapsedMs = null;
+  updateTimerDisplay();
+  timerInterval = setInterval(updateTimerDisplay, 1000);
+}
+
+function stopTimer(){
+  clearInterval(timerInterval);
+  timerInterval = null;
+  if(startTime != null){
+    finalElapsedMs = Date.now() - startTime;
+  }
+}
+
 /* ---------- guessing / scoring ---------- */
 
 function diffArrow(guess, target){
@@ -944,12 +989,15 @@ function makeRow(guess){
 
 function endGame(won){
   over = true;
+  stopTimer();
+  timerDisplay.textContent = formatTime(finalElapsedMs);
   renderNav();
   resultEl.classList.add('show', won ? 'win' : 'lose');
   resultTitle.textContent = won ? 'Correct' : 'Out of guesses';
+  const timeStr = formatTime(finalElapsedMs);
   resultBody.textContent = won
-    ? `It was ${target.name} (${target.abbr}) — ${diffLabel(target)} ${target.type.toLowerCase()} in ${target.area}, ${target.realm}.`
-    : `The tower was ${target.name} (${target.abbr}) — ${diffLabel(target)} ${target.type.toLowerCase()} in ${target.area}, ${target.realm}, made by ${target.creators.join(' and ')}.`;
+    ? `It was ${target.name} (${target.abbr}) — ${diffLabel(target)} ${target.type.toLowerCase()} in ${target.area}, ${target.realm}. Solved in ${timeStr}.`
+    : `The tower was ${target.name} (${target.abbr}) — ${diffLabel(target)} ${target.type.toLowerCase()} in ${target.area}, ${target.realm}, made by ${target.creators.join(' and ')}. Time: ${timeStr}.`;
   resultFact.textContent = target.fact || '';
 }
 
@@ -985,6 +1033,7 @@ function newGame(){
   resultFact.textContent = '';
   guessesLeftEl.textContent = `${MAX_GUESSES} guesses remaining`;
   renderPips();
+  startTimer();
   renderNav();
 }
 
