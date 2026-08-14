@@ -302,9 +302,13 @@ const AREA_GROUPS = [
 
 // to a generated gradient instead.
 const AREA_IMAGES = {
-  "Ring 0 - Purgatorio": "images/ring0.png"
+  "Ring 0 - Purgatorio": "images/ring0.png",
+  "Ring 1 - Limbo": "images/ring1.png",
+  "Forgotten Ridge": "images/forgottenridge.png"
 };
 
 const AREA_EMBLEMS = {
-  // "Forgotten Ridge": "images/emblems/forgottenridge.png"
+  "Ring 0 - Purgatorio": "images/emblems/ring0emblem.png",
+  "Ring 1 - Limbo": "images/emblems/ring1emblem.png",
+  "Forgotten Ridge": "images/emblems/forgottenridgeemblem.png"
 };
