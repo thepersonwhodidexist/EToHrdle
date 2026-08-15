@@ -275,6 +275,17 @@ const TOWERS = [
     difficulty:"Hard", rating:3.61, creators:["bLockerman666"],
     fact:"The final jumps resemble the final outside section of Tower of True Skill."
   },
+
+
+
+
+  {
+  name: "Tower of Testing Canon", abbr:"ToTC", type:"Tower",
+  realm: REALM_INFERNO, area:"Ring 2",
+  difficulty:"Challenging", rating:5.55, creators:["someone"],
+  canon: false,
+  fact:"testing..."
+}
 ];
 
 const AREA_GROUPS = [
@@ -300,7 +311,6 @@ const AREA_GROUPS = [
   { realm: REALM_SPATIAL, main:"Zone 10 - Interstellar Shore" }
 ];
 
-// to a generated gradient instead.
 const AREA_IMAGES = {
   "Ring 0 - Purgatorio": "images/ring0.png",
   "Ring 1 - Limbo": "images/ring1.png",
