@@ -423,7 +423,10 @@
   </header>
 
   <div class="panel" id="menu-screen">
-    <p class="nav-title">Stats</p>
+    <p class="nav-title">
+      Stats
+      <button type="button" class="mini-btn" id="reset-stats-btn">Reset</button>
+    </p>
     <div class="stats-row" id="stats-row"></div>
 
     <p class="nav-title">Settings</p>
@@ -494,8 +497,8 @@
       <input type="text" id="tower-search" placeholder="Search towers..." autocomplete="off">
       <div class="sort-row" id="sort-row">
         <span class="sort-label">Sort by</span>
-        <button type="button" class="sort-btn active" data-sort="name">Name</button>
-        <button type="button" class="sort-btn" data-sort="difficulty">Difficulty</button>
+        <button type="button" class="sort-btn" data-sort="name">Name</button>
+        <button type="button" class="sort-btn active" data-sort="difficulty">Difficulty</button>
         <button type="button" class="sort-btn" data-sort="type">Type</button>
       </div>
     </div>
@@ -518,9 +521,6 @@
       <h2 id="result-title"></h2>
       <p id="result-body"></p>
       <p class="fact" id="result-fact"></p>
-      <div class="btn-row">
-        <button id="share-btn">Copy result</button>
-      </div>
     </div>
 
     <div class="legend">
@@ -531,7 +531,6 @@
 
     <div class="btn-row">
       <button id="menu-btn">Menu</button>
-      <button id="give-up-btn">Give up</button>
       <button id="new-game-btn">New tower</button>
     </div>
   </div>
@@ -550,7 +549,7 @@ const ALL_COLUMNS = [
 let MAX_GUESSES = 3;
 let activeColumns = ALL_COLUMNS.map(c=>c.key);
 let activePool = TOWERS;
-let currentSort = 'name';
+let currentSort = 'difficulty';
 
 let target = null;
 let guessesUsed = 0;
@@ -610,6 +609,11 @@ function renderStats(){
   `;
 }
 
+function resetStats(){
+  saveStats({ played:0, wins:0, streak:0, bestTimeMs:null });
+  renderStats();
+}
+
 function recordResult(won, elapsedMs){
   const stats = loadStats();
   stats.played += 1;
@@ -649,8 +653,6 @@ const resultTitle = document.getElementById('result-title');
 const resultBody = document.getElementById('result-body');
 const resultFact = document.getElementById('result-fact');
 const newGameBtn = document.getElementById('new-game-btn');
-const giveUpBtn = document.getElementById('give-up-btn');
-const shareBtn = document.getElementById('share-btn');
 
 function areaKey(fullLabel){
   return fullLabel.split(' - ')[0];
@@ -732,6 +734,12 @@ function populateFilterUI(){
 }
 populateFilterUI();
 renderStats();
+
+document.getElementById('reset-stats-btn').addEventListener('click', ()=>{
+  if(confirm('Reset all stats? This can\'t be undone.')){
+    resetStats();
+  }
+});
 
 startBtn.addEventListener('click', ()=>{
   let n = parseInt(guessCountInput.value, 10);
