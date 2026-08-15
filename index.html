@@ -485,6 +485,13 @@
       <div class="hint-toggles" id="type-toggles"></div>
     </div>
 
+    <div class="settings-row">
+      <span class="settings-label">Canon</span>
+      <div class="hint-toggles">
+        <label><input type="checkbox" id="uncanon-toggle"> Include uncanon towers</label>
+      </div>
+    </div>
+
     <p class="filter-warning" id="filter-warning"></p>
 
     <div class="btn-row">
@@ -714,9 +721,11 @@ function populateFilterUI(){
   });
 
   const diffDiv = document.getElementById('difficulty-toggles');
+  const uncheckedByDefault = new Set(["Horrific","Unreal"]);
   DIFF_ORDER.forEach(d=>{
+    const checkedAttr = uncheckedByDefault.has(d) ? '' : 'checked';
     diffDiv.insertAdjacentHTML('beforeend',
-      `<label><input type="checkbox" class="difficulty-toggle" value="${d}" checked> ${d}</label>`);
+      `<label><input type="checkbox" class="difficulty-toggle" value="${d}" ${checkedAttr}> ${d}</label>`);
   });
 
   const typeDiv = document.getElementById('type-toggles');
@@ -754,12 +763,14 @@ startBtn.addEventListener('click', ()=>{
   const enabledAreaKeys = new Set(Array.from(document.querySelectorAll('.area-toggle:checked')).map(cb=>areaKey(cb.value)));
   const enabledDifficulties = new Set(Array.from(document.querySelectorAll('.difficulty-toggle:checked')).map(cb=>cb.value));
   const enabledTypes = new Set(Array.from(document.querySelectorAll('.type-toggle:checked')).map(cb=>cb.value));
+  const includeUncanon = document.getElementById('uncanon-toggle').checked;
 
   const pool = TOWERS.filter(t=>
     enabledRealms.has(t.realm) &&
     enabledAreaKeys.has(t.area) &&
     enabledDifficulties.has(t.difficulty) &&
-    enabledTypes.has(t.type)
+    enabledTypes.has(t.type) &&
+    (includeUncanon || t.canon !== false)
   );
 
   const warningEl = document.getElementById('filter-warning');
