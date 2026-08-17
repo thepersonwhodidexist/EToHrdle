@@ -216,7 +216,7 @@ const TOWERS = [
     fact:"At most, this steeple was constructed within a span of four hours."
   },
   {
-    name: "Tower of Versatility", abbr:"ToW", type:"Tower",
+    name: "Tower of Versatility", abbr:"ToV", type:"Tower",
     realm: REALM_INFERNO, area:"Forgotten Ridge",
     difficulty:"Difficult", rating:4.64, creators:["Auterus"],
     fact:"The creator initially made this Tower for the Ring 2 Peter Griffin contest, a contest for which one would replace Tower of One Equals Zero. However, none of its towers ended up replacing ToOEZ."
@@ -276,13 +276,90 @@ const TOWERS = [
     fact:"The final jumps resemble the final outside section of Tower of True Skill."
   },
 
-
+  {
+    name: "Tower of Phone Snapping", abbr:"ToPS", type:"Tower",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Medium", rating:2.76, creators:["Gammattor"],
+    fact:"This tower had no bugs upon bugtesting."
+  },
+  {
+    name: "Tower of Big Hole", abbr:"ToBH", type:"Tower",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Hard", rating:3.40, creators:["AzaZeall"],
+    fact:"When playing this tower, lanterns that are supposed to be visible only when going through this tower in Tower of Deep Darkness's tower crossing section are visible in normal runs of this tower."
+  },
+  {
+    name: "Tower of Overcoming Hatred", abbr:"ToOH", type:"Tower",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Hard", rating:3.73, creators:["plant9seeds", "hearttadri"],
+    fact:"This tower's winpad was infamous for not working even after many attempts and could sometimes fling you, causing a dead run."
+  },
+  {
+    name: "Tower of Cold Hands", abbr:"ToCH", type:"Tower",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Difficult", rating:4.00, creators:["HilmNoobly", "ObrenTune"],
+    fact:"This tower got its name when ObrenTune's hands got cold and he couldn't articulate well while making this tower."
+  },
+  {
+    name: "Tower of Falling and Failing", abbr:"ToFAF", type:"Tower",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Challenging", rating:5.61, creators:["Hat_Rox"],
+    fact:"While this tower was rated Remorseless, it was technically the hardest tower ever beaten for a very brief amount of time, before it was lowered to Challenging. (However, this feat is often disregarded due to the former difficulty rating being generally not taken seriously.)"
+  },
+  {
+    name: "Tower of Traps", abbr:"ToT", type:"Tower",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Challenging", rating:5.71, creators:["Gammattor", "Paramockss"],
+    fact:"The original submission version of this tower only had 9 floors."
+  },
+  {
+    name: "Tower of Deep Darkness", abbr:"ToDD", type:"Tower",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Challenging", rating:5.80, creators:["Karinriine", "ciel_azulsky", "Cll0y"],
+    fact:"There was a planned sequel to this tower, called Citadel of True Darkness, but it got scrapped."
+  },
+  {
+    name: "Tower of Shattered Dreams", abbr:"ToSD", type:"Tower",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Challenging", rating:5.84, creators:["Fauxyde"],
+    fact:"This tower was the first to be inserted into Ring 2, alongside Tower of Cold Hands."
+  },
+  {
+    name: "Tower of Table Flipping", abbr:"ToTF", type:"Tower",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Intense", rating:6.44, creators:["IceNsalt"],
+    fact:"This tower used to have a miniature version in Tower of Increasing Stress."
+  },
+  {
+    name: "Tower of Eternal Suffering", abbr:"ToES", type:"Tower",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Remorseless", rating:7.50, creators:["tintom495"],
+    fact:"This tower was inspired by tintom495's experience with Tower of Impossible Expectations, hence the few similarities."
+  },
+  {
+    name: "Citadel of Wacky Strategy", abbr:"CoWS", type:"Citadel",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Remorseless", rating:7.96, creators:["Karinriine", "ciel_azulsky", "bLockerman666", "Professor_Skittles", "logicchecks", "aamo_s", "uuuuuuuurchinnnnnnnn", "AzaZeall"],
+    fact:"In the original version of CoWS, Floor 21 used to have gameplay, before it was turned into a safety net/rest floor."
+  },
+  {
+    name: "Tower of Difficulty Chart", abbr:"ToDC", type:"Tower",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Insane", rating:8.03, creators:["It_Near", "Lightsynth", "Cll0y"],
+    fact:"This tower was inspired by tintom495's experience with Tower of Impossible Expectations, hence the few similarities."
+  },
+  {
+    name: "Maybe A Tower", abbr:"MAT", type:"Mini Tower",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Easy", rating:1.07, creators:["ObrenTune"],
+    fact:"This is the shortest tower in the game, being able to be completed in under 15 seconds."
+  },
 
 
   {
-  name: "Tower of Testing Canon", abbr:"ToTC", type:"Tower",
+  name: "Tower of Broken Tables", abbr:"ToBT", type:"Tower",
   realm: REALM_INFERNO, area:"Ring 2",
-  difficulty:"Challenging", rating:5.55, creators:["someone"],
+  difficulty:"Unreal", rating:55.55, creators:[""YOUR FACE""],
   canon: false,
   fact:"testing..."
 }
