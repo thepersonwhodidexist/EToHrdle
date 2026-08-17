@@ -357,11 +357,11 @@ const TOWERS = [
 
 
   {
-  name: "Tower of Broken Tables", abbr:"ToBT", type:"Tower",
-  realm: REALM_INFERNO, area:"Ring 2",
-  difficulty:"Unreal", rating:13.24, creators:["YOUR FACE"],
-  canon: false,
-  fact:"testing..."
+    name: "Tower of Broken Tables", abbr:"ToBT", type:"Tower",
+    realm: REALM_INFERNO, area:"Ring 2",
+    difficulty:"Easy", rating:1.10, creators:["amongus"],
+    canon: false,
+    fact:"testing..."
   }
 ];
 
