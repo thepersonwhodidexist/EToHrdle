@@ -392,10 +392,12 @@ const AREA_IMAGES = {
   "Ring 0 - Purgatorio": "images/ring0.png",
   "Ring 1 - Limbo": "images/ring1.png",
   "Forgotten Ridge": "images/forgottenridge.png"
+  "Ring 2 - Desire": "images/ring2.png",
 };
 
 const AREA_EMBLEMS = {
   "Ring 0 - Purgatorio": "images/emblems/ring0emblem.png",
   "Ring 1 - Limbo": "images/emblems/ring1emblem.png",
   "Forgotten Ridge": "images/emblems/forgottenridgeemblem.png"
+  "Ring 2 - Desire": "images/emblems/ring2emblem.png",
 };
